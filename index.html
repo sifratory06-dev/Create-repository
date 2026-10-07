@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КВИЗ — 6 класс | Сборник вопросов</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e2231a'/><text x='50' y='72' font-size='60' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>?</text></svg>">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { min-height: 100%; }
+  body {
+    font-family: "Segoe UI", "Trebuchet MS", Arial, sans-serif;
+    background: #16214d;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(0,162,255,.18) 0, transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(226,35,26,.16) 0, transparent 45%),
+      radial-gradient(circle at 80% 85%, rgba(55,195,63,.14) 0, transparent 45%),
+      radial-gradient(circle at 10% 85%, rgba(255,200,0,.14) 0, transparent 45%);
+    color: #101533;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bg-square {
+    position: fixed;
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    border: 3px solid rgba(255,255,255,.14);
+    opacity: .5;
+    z-index: 0;
+    animation: floaty 6s ease-in-out infinite;
+  }
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-22px) rotate(12deg); }
+  }
+
+  .wrap { width: 100%; max-width: 1000px; margin: 0 auto; padding: 18px 16px 40px; position: relative; z-index: 1; flex: 1; }
+
+  header { text-align: center; margin-bottom: 18px; }
+  .logo { display: inline-flex; gap: 6px; margin-bottom: 6px; }
+  .logo span {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: clamp(44px, 9vw, 64px); height: clamp(44px, 9vw, 64px);
+    font-size: clamp(26px, 6vw, 42px); font-weight: 900; color: #fff;
+    border-radius: 14px; border: 3px solid #101533; box-shadow: 0 5px 0 #101533;
+  }
+  .lk { background: #e2231a; }
+  .lv { background: #0071bc; }
+  .li { background: #f5b800; }
+  .lz { background: #37b13f; }
+  h1 { font-size: clamp(1.5rem, 5vw, 2.2rem); font-weight: 900; color: #fff; text-shadow: 0 3px 0 #101533; letter-spacing: 1px; }
+  .subtitle { color: #c8d4ff; font-weight: 600; margin-top: 4px; font-size: .95rem; }
+  .score-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #fff; border: 3px solid #101533; border-radius: 999px;
+    padding: 6px 16px; font-weight: 800; margin-top: 10px;
+    box-shadow: 0 4px 0 #101533; font-size: .95rem;
+  }
+  .score-chip .star { font-size: 1.1rem; }
+
+  nav.tabs {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    margin-bottom: 18px;
+  }
+  .tab {
+    border: 3px solid #101533; border-radius: 16px; cursor: pointer;
+    padding: 14px 6px; text-align: center; font-weight: 900; color: #101533;
+    font-size: clamp(.95rem, 2.6vw, 1.15rem);
+    box-shadow: 0 5px 0 #101533;
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+    user-select: none;
+  }
+  .tab:hover { transform: translateY(-2px); filter: brightness(1.05); }
+  .tab:active { transform: translateY(3px); box-shadow: 0 1px 0 #101533; }
+  .tab.active { outline: 4px solid #fff; transform: translateY(3px); box-shadow: 0 2px 0 #101533; }
+  .tab .ic { font-size: 1.35em; display: block; margin-bottom: 2px; }
+  .tab-rus  { background: #7ab8ff; }
+  .tab-math { background: #ff8a80; }
+  .tab-eng  { background: #ffe066; }
+  .tab-hist { background: #8ce99a; }
+  @media (max-width: 640px) { nav.tabs { grid-template-columns: repeat(2, 1fr); } }
+
+  .card {
+    background: #fff; border: 4px solid #101533; border-radius: 22px;
+    box-shadow: 0 7px 0 #101533; padding: 20px; margin-bottom: 20px;
+  }
+
+  .q-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .subject-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: #fff; font-weight: 900; padding: 5px 14px; border-radius: 999px;
+    border: 3px solid #101533; font-size: .9rem;
+  }
+  .badge-rus  { background: #0071bc; }
+  .badge-math { background: #e2231a; }
+  .badge-eng  { background: #c99000; }
+  .badge-hist { background: #2e8b46; }
+  .q-counter { font-weight: 800; color: #4a5578; }
+
+  .mini-bar {
+    height: 12px; background: #e8ebf7; border: 2px solid #101533; border-radius: 999px;
+    overflow: hidden; margin-bottom: 18px;
+  }
+  .mini-bar div { height: 100%; width: 0; transition: width .3s ease; }
+
+  .question { font-size: clamp(1.1rem, 3.4vw, 1.35rem); font-weight: 800; line-height: 1.45; margin-bottom: 18px; }
+
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 640px) { .options { grid-template-columns: 1fr; } }
+  .option {
+    background: #f2f4ff; border: 3px solid #101533; border-radius: 14px;
+    padding: 13px 14px; font-size: 1rem; font-weight: 700; text-align: left;
+    cursor: pointer; box-shadow: 0 4px 0 #101533;
+    transition: transform .1s ease, box-shadow .1s ease, background .15s ease;
+    font-family: inherit; color: #101533;
+  }
+  .option:hover { transform: translateY(-2px); }
+  .option:active { transform: translateY(2px); box-shadow: 0 1px 0 #101533; }
+  .option .key {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 9px; margin-right: 10px;
+    font-weight: 900; color: #fff; border: 2px solid #101533; font-size: .9rem;
+  }
+  .option.correct { background: #8ce99a; }
+  .option.wrong   { background: #ffa8a8; }
+  .option.correct .key, .option.wrong .key { filter: none; }
+  .option:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 16px; padding: 14px 16px; border-radius: 14px; font-weight: 700;
+    border: 3px solid #101533; display: none; line-height: 1.45;
+  }
+  .feedback.ok   { background: #d3f9d8; color: #1e6b2f; display: block; }
+  .feedback.no   { background: #ffe3e3; color: #a61e1e; display: block; }
+  .feedback .explain { font-weight: 600; margin-top: 5px; color: #3c4060; }
+
+  .next-btn {
+    margin-top: 16px; width: 100%; padding: 15px; font-size: 1.15rem; font-weight: 900;
+    color: #fff; background: #0071bc; border: 3px solid #101533; border-radius: 14px;
+    cursor: pointer; box-shadow: 0 5px 0 #101533; font-family: inherit;
+    transition: transform .1s ease, box-shadow .1s ease, filter .15s ease;
+  }
+  .next-btn:hover { filter: brightness(1.08); }
+  .next-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #101533; }
+
+  .summary { text-align: center; }
+  .big-score {
+    width: clamp(120px, 30vw, 170px); height: clamp(120px, 30vw, 170px);
+    border-radius: 50%; margin: 6px auto 16px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border: 5px solid #101533; box-shadow: 0 6px 0 #101533; color: #fff;
+  }
+  .big-score .num { font-size: clamp(2rem, 8vw, 3rem); font-weight: 900; line-height: 1; }
+  .big-score .lbl { font-weight: 800; font-size: .85rem; margin-top: 2px; }
+  .summary h2 { font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 900; margin-bottom: 6px; }
+  .summary p { font-weight: 600; color: #4a5578; margin-bottom: 4px; }
+  .summary .msg { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; }
+
+  .progress-card { overflow-x: auto; }
+  .progress-card h2 {
+    font-size: 1.2rem; font-weight: 900; margin-bottom: 14px;
+    display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  table {
+    width: 100%; border-collapse: collapse; min-width: 560px;
+  }
+  th, td {
+    padding: 10px 12px; text-align: left; border: 3px solid #101533;
+    font-weight: 700; font-size: .95rem;
+  }
+  th { background: #101533; color: #fff; font-weight: 900; }
+  tr:nth-child(even) td { background: #f2f4ff; }
+  td.rus  { background: #7ab8ff; }
+  td.math { background: #ff8a80; }
+  td.eng  { background: #ffe066; }
+  td.hist { background: #8ce99a; }
+  td.row-label { font-weight: 900; color: #101533; width: 150px; }
+  .bar-cell { min-width: 160px; }
+  .bar {
+    height: 14px; background: #e8ebf7; border: 2px solid #101533; border-radius: 999px;
+    overflow: hidden; min-width: 120px;
+  }
+  .bar div { height: 100%; width: 0; border-radius: 999px; transition: width .4s ease; }
+  .pts { font-weight: 900; }
+  .mark {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    border: 2px solid #101533; font-weight: 900; font-size: .82rem; white-space: nowrap;
+  }
+  tr.total td { background: #ffe9c2; font-weight: 900; }
+
+  .small-btn {
+    padding: 8px 14px; border: 3px solid #101533; border-radius: 12px;
+    font-weight: 800; cursor: pointer; font-family: inherit; font-size: .85rem;
+    box-shadow: 0 3px 0 #101533; transition: transform .1s ease, box-shadow .1s ease;
+  }
+  .small-btn:hover { transform: translateY(-2px); }
+  .small-btn:active { transform: translateY(2px); box-shadow: 0 0 0 #101533; }
+  .small-btn.danger { background: #ffa8a8; color: #101533; }
+
+  footer { text-align: center; color: #9fb0e8; font-weight: 600; font-size: .85rem; padding: 10px 0 24px; position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+  <div class="bg-square" style="background:#0071bc; top:8%; left:4%;"></div>
+  <div class="bg-square" style="background:#e2231a; top:14%; right:5%; animation-delay:1.2s;"></div>
+  <div class="bg-square" style="background:#f5b800; bottom:16%; left:6%; animation-delay:.6s;"></div>
+  <div class="bg-square" style="background:#37b13f; bottom:10%; right:8%; animation-delay:2s;"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <span class="lk">К</span><span class="lv">В</span><span class="li">И</span><span class="lz">З</span>
+      </div>
+      <h1>КВИЗ · 6 КЛАСС</h1>
+      <div class="subtitle">Сборник вопросов: русский, математика, английский, история</div>
+      <div class="score-chip"><span class="star">⭐</span> Всего баллов: <span id="totalPts">0</span></div>
+    </header>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab tab-rus active" data-sub="rus"><span class="ic">📖</span>Русский</button>
+      <button class="tab tab-math" data-sub="math"><span class="ic">🧮</span>Математика</button>
+      <button class="tab tab-eng" data-sub="eng"><span class="ic">🔤</span>Английский</button>
+      <button class="tab tab-hist" data-sub="hist"><span class="ic">🏰</span>История</button>
+    </nav>
+
+    <main>
+      <section class="card" id="quizCard">
+        <div class="q-head">
+          <span class="subject-badge" id="subBadge"></span>
+          <span class="q-counter" id="qCounter"></span>
+        </div>
+        <div class="mini-bar"><div id="miniBar"></div></div>
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <button class="next-btn" id="nextBtn" style="display:none;">Далее ➜</button>
+      </section>
+
+      <section class="card summary" id="summaryCard" style="display:none;">
+        <div class="big-score" id="bigScore"></div>
+        <h2 id="sumTitle"></h2>
+        <p id="sumStat"></p>
+        <div class="msg" id="sumMsg"></div>
+        <button class="next-btn" style="background:#37b13f; max-width:340px; margin:0 auto 10px;" id="againBtn">🔁 Пройти ещё раз</button>
+      </section>
+
+      <section class="card progress-card">
+        <h2>🏆 Таблица прогресса <button class="small-btn danger" id="resetBtn">Сбросить</button></h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Предмет</th>
+              <th>Вопросы</th>
+              <th>Баллы</th>
+              <th class="bar-cell">Прогресс</th>
+              <th>Оценка</th>
+            </tr>
+          </thead>
+          <tbody id="progressBody"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <footer>КВИЗ · 6 класс — играй, отвечай, улучшай свой результат!</footer>
+
+<script>
+const QUIZ = {
+  rus: {
+    title: "Русский язык", ic: "📖", color: "#0071bc", light: "#7ab8ff",
+    questions: [
+      { q: "В каком слове на месте пропуска пишется буква И?", o: ["соб…рать", "зам…реть", "выт…реть", "расст…лить"], a: 0, e: "Собирать — если после корня стоит суффикс -а-, в корне пишется И (бер/бира, мер/мира): собИрать." },
+      { q: "Укажите слово с приставкой ПРЕ-:", o: ["пр…бежать", "пр…школьный", "пр…градить", "пр…открыть"], a: 2, e: "Преградить = перегородить (приставка ПРЕ- близка по значению к слову «пере»)." },
+      { q: "Какое слово написано без ошибки?", o: ["Искуство", "Исскуство", "Искусство", "Искуссво"], a: 2, e: "Правильно: искусство (две буквы С: первая в корне, вторая в суффиксе)." },
+      { q: "В каком слове на конце пишется мягкий знак?", o: ["врач…", "луч…", "рож…", "камыш…"], a: 2, e: "Рожь — существительное женского рода, 3-го склонения: после шипящих пишется Ь. Врач и луч мужского рода — без Ь." },
+      { q: "Какое числительное написано правильно?", o: ["шеснадцать", "шестнадцать", "шеснацать", "шестнадцеть"], a: 1, e: "Шестнадцать: в середине слова пишется буква Т (шестЬ + надцать)." },
+      { q: "Подберите синоним к слову «храбрый»:", o: ["трусливый", "смелый", "ленивый", "грустный"], a: 1, e: "Синоним храброго — смелый. Трусливый — это антоним." },
+      { q: "В каком слове два корня?", o: ["пришкольный", "лесовоз", "подводный", "переход"], a: 1, e: "Лесовоз: корни ЛЕС и ВОЗ, соединительная гласная О." },
+      { q: "Укажите глагол:", o: ["зелень", "зеленеть", "зелёный", "зеленковатый"], a: 1, e: "Зеленеть — глагол (что делать?). Зелень — существительное, зелёный — прилагательное." },
+      { q: "Какое существительное женского рода?", o: ["тюль", "шампунь", "мозоль", "рояль"], a: 2, e: "Мозоль — женского рода. Тюль, шампунь и рояль — мужского рода." },
+      { q: "В каком предложении между частями нужна запятая?", o: ["Солнце взошло и озарило лес.", "Солнце взошло и воздух сразу прогрелся.", "Дети бегали и смеялись.", "Я взял книгу и сел читать."], a: 1, e: "Второе предложение сложное: две грамматические основы (солнце взошло; воздух прогрелся), поэтому нужна запятая." }
+    ]
+  },
+  math: {
+    title: "Математика", ic: "🧮", color: "#e2231a", light: "#ff8a80",
+    questions: [
+      { q: "Вычислите: 2/5 + 1/3", o: ["3/8", "11/15", "3/15", "1/2"], a: 1, e: "Приводим к общему знаменателю 15: 6/15 + 5/15 = 11/15." },
+      { q: "Найдите 25% от 200:", o: ["25", "50", "75", "100"], a: 1, e: "25% — это четверть: 200 : 4 = 50." },
+      { q: "Решите уравнение: x − 17 = 34", o: ["x = 17", "x = 51", "x = 27", "x = 44"], a: 1, e: "x = 34 + 17 = 51." },
+      { q: "Что больше: 3/4 или 0,7?", o: ["3/4", "0,7", "они равны", "нельзя сравнить"], a: 0, e: "3/4 = 0,75, а 0,75 > 0,7." },
+      { q: "Сократите дробь 12/18:", o: ["4/6", "3/4", "2/3", "6/9"], a: 2, e: "Делим числитель и знаменатель на 6: 12/18 = 2/3." },
+      { q: "Чему равен модуль числа −15?", o: ["−15", "15", "0", "−30"], a: 1, e: "Модуль числа — это его расстояние до нуля: |−15| = 15." },
+      { q: "Вычислите: 3,6 × 0,5", o: ["1,8", "18", "0,18", "3,1"], a: 0, e: "3,6 × 0,5 = 1,8 (умножить на 0,5 — это взять половину)." },
+      { q: "Найдите площадь прямоугольника со сторонами 7 см и 4 см:", o: ["11 см²", "28 см²", "14 см²", "22 см²"], a: 1, e: "S = a × b = 7 × 4 = 28 см²." },
+      { q: "Найдите НОД чисел 12 и 18:", o: ["3", "6", "9", "36"], a: 1, e: "Делители 12: 1, 2, 3, 4, 6, 12. Делители 18: 1, 2, 3, 6, 9, 18. Наибольший общий — 6." },
+      { q: "Решите пропорцию: 2/5 = x/15", o: ["x = 4", "x = 5", "x = 6", "x = 10"], a: 2, e: "x = (2 × 15) : 5 = 30 : 5 = 6." }
+    ]
+  },
+  eng: {
+    title: "Английский язык", ic: "🔤", color: "#c99000", light: "#ffe066",
+    questions: [
+      { q: "Как переводится слово «холодильник»?", o: ["stove", "fridge", "sink", "oven"], a: 1, e: "Fridge (refrigerator) — холодильник. Stove — плита, sink — раковина, oven — духовка." },
+      { q: "Выберите правильную форму: She ___ to school every day.", o: ["go", "goes", "going", "gone"], a: 1, e: "В Present Simple с she/he/it к глаголу добавляется -s/-es: she GOES." },
+      { q: "Какое слово лишнее?", o: ["cat", "dog", "bird", "book"], a: 3, e: "Book — книга, а кошка, собака и птица — это животные." },
+      { q: "Какой Past Simple у глагола «go»?", o: ["goed", "went", "gone", "goes"], a: 1, e: "Go — неправильный глагол: go → went (Past Simple) → gone (Past Participle)." },
+      { q: "Как сказать «Я живу в Москве»?", o: ["I live in Moscow", "I lives in Moscow", "I living in Moscow", "I am live in Moscow"], a: 0, e: "С I употребляется форма live без -s: I live in Moscow." },
+      { q: "Какое слово означает «библиотека»?", o: ["bookshop", "library", "school", "hospital"], a: 1, e: "Library — библиотека. Bookshop — книжный магазин." },
+      { q: "Выберите правильный вариант: There ___ many apples on the table.", o: ["is", "are", "am", "be"], a: 1, e: "Apples — множественное число, поэтому there ARE." },
+      { q: "Подберите антоним к слову «big»:", o: ["small", "large", "huge", "tall"], a: 0, e: "Антоним (противоположность) слова big — small. Large, huge и tall — синонимы." },
+      { q: "В каком слове буква A читается как [ei]?", o: ["cat", "cake", "apple", "hat"], a: 1, e: "В открытом слоге (cake) A читается как [ei]. Cat и hat — закрытый слог, звук [æ]." },
+      { q: "Как сказать «Я умею плавать»?", o: ["I can swim", "I can swimming", "I can swims", "I cans swim"], a: 0, e: "После модального глагола can инфинитив без to и без окончаний: I can swim." }
+    ]
+  },
+  hist: {
+    title: "История", ic: "🏰", color: "#2e8b46", light: "#8ce99a",
+    questions: [
+      { q: "В каком году произошло Крещение Руси?", o: ["862 г.", "988 г.", "1054 г.", "1240 г."], a: 1, e: "Князь Владимир крестил Русь в 988 году." },
+      { q: "Кто считается автором «Повести временных лет»?", o: ["Нестор", "Кирилл", "Иван Грозный", "Ярослав Мудрый"], a: 0, e: "Летописец Нестор — составитель древнейшей русской летописи «Повесть временных лет»." },
+      { q: "Кто разбил шведов на реке Неве в 1240 году?", o: ["Дмитрий Донской", "Александр Невский", "Владимир Мономах", "Иван Калита"], a: 1, e: "За победу на Неве князь Александр получил прозвище Невский." },
+      { q: "В каком году произошло Ледовое побоище?", o: ["1223 г.", "1242 г.", "1380 г.", "1480 г."], a: 1, e: "5 апреля 1242 года Александр Невский разбил немецких рыцарей на льду Чудского озера." },
+      { q: "В каком году была Куликовская битва?", o: ["1380 г.", "1480 г.", "1223 г.", "1240 г."], a: 0, e: "8 сентября 1380 года Дмитрий Донской одержал победу над Мамаем на Куликовом поле." },
+      { q: "Кто стал первым русским царём (венчался на царство в 1547 году)?", o: ["Иван III", "Иван IV Грозный", "Пётр I", "Борис Годунов"], a: 1, e: "В 1547 году Иван IV (Грозный) первым принял титул царя." },
+      { q: "Какой город стал центром объединения русских земель при Иване III?", o: ["Новгород", "Москва", "Киев", "Владимир"], a: 1, e: "Именно Москва стала столицей единого Русского государства при Иване III." },
+      { q: "В каком году, по летописи, варяги были призваны на княжение на Русь?", o: ["862 г.", "988 г.", "1147 г.", "1242 г."], a: 0, e: "862 год — призвание Рюрика, с него начинается «Повесть временных лет» и история династии Рюриковичей." },
+      { q: "Когда Москва впервые упоминается в летописи?", o: ["1147 г.", "1240 г.", "1380 г.", "988 г."], a: 0, e: "Первое упоминание о Москве — 1147 год, при князе Юрии Долгоруком." },
+      { q: "Какой московский князь получил прозвище «Калита» (денежная сумка)?", o: ["Иван I", "Иван III", "Дмитрий Донской", "Александр Невский"], a: 0, e: "Иван Данилович Калита прославился бережливостью и накоплением богатств для Москвы." }
+    ]
+  }
+};
+
+const STORE_KEY = "kviz6_progress_v1";
+const KEYS = ["А", "Б", "В", "Г"];
+
+let current = "rus";
+let session = {};
+for (const s in QUIZ) session[s] = { i: 0, correct: 0 };
+
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  catch (e) { return {}; }
+}
+function saveStore() { localStorage.setItem(STORE_KEY, JSON.stringify(store)); }
+let store = loadStore();
+
+const el = id => document.getElementById(id);
+
+function badgeOf(s) {
+  const sb = el("subBadge");
+  sb.className = "subject-badge badge-" + s;
+  sb.innerHTML = QUIZ[s].ic + " " + QUIZ[s].title;
+}
+
+function renderQuestion(s) {
+  const quiz = QUIZ[s];
+  const state = session[s];
+  const q = quiz.questions[state.i];
+  badgeOf(s);
+  el("qCounter").textContent = "Вопрос " + (state.i + 1) + " из " + quiz.questions.length;
+  el("miniBar").style.width = ((state.i) / quiz.questions.length * 100) + "%";
+  el("miniBar").style.background = quiz.color;
+  el("question").textContent = q.q;
+
+  const box = el("options");
+  box.innerHTML = "";
+  q.o.forEach((opt, idx) => {
+    const b = document.createElement("button");
+    b.className = "option";
+    b.innerHTML = '<span class="key" style="background:' + quiz.color + '">' + KEYS[idx] + "</span>" + opt;
+    b.onclick = () => pick(s, idx, b);
+    box.appendChild(b);
+  });
+
+  el("feedback").className = "feedback";
+  el("feedback").style.display = "none";
+  el("nextBtn").style.display = "none";
+  el("summaryCard").style.display = "none";
+  el("quizCard").style.display = "block";
+}
+
+function pick(s, idx, btn) {
+  const quiz = QUIZ[s];
+  const state = session[s];
+  const q = quiz.questions[state.i];
+  if (btn.disabled) return;
+
+  const btns = Array.from(el("options").children);
+  btns.forEach(b => b.disabled = true);
+
+  const isRight = idx === q.a;
+  if (isRight) state.correct++;
+
+  const st = store[s] || (store[s] = { correct: 0, total: 0 });
+  st.total++;
+  if (isRight) st.correct++;
+  saveStore();
+
+  btns.forEach((b, i) => {
+    if (i === q.a) b.classList.add("correct");
+    else if (i === idx) b.classList.add("wrong");
+  });
+
+  const fb = el("feedback");
+  fb.className = "feedback " + (isRight ? "ok" : "no");
+  fb.innerHTML = (isRight ? "✅ Верно! Молодец!" : "❌ Неверно. Правильный ответ: " + KEYS[q.a] + ". ") +
+    '<div class="explain">💡 ' + q.e + "</div>";
+
+  const last = state.i === quiz.questions.length - 1;
+  el("nextBtn").style.display = "block";
+  el("nextBtn").textContent = last ? "Показать результат 🏁" : "Далее ➜";
+  el("nextBtn").onclick = () => last ? showSummary(s) : (state.i++, renderQuestion(s));
+  updateUI();
+}
+
+function showSummary(s) {
+  const quiz = QUIZ[s];
+  const st = store[s] || { correct: 0, total: 0 };
+  const pct = st.total ? Math.round(st.correct / st.total * 100) : 0;
+  el("quizCard").style.display = "none";
+  el("summaryCard").style.display = "block";
+
+  const big = el("bigScore");
+  big.style.background = quiz.color;
+  el("bigScore").innerHTML = '<div class="num">' + st.correct + "/" + st.total + '</div><div class="lbl">правильных</div>';
+
+  el("sumTitle").textContent = quiz.ic + " " + quiz.title + " пройден!";
+  el("sumStat").textContent = "Правильно: " + st.correct + " из " + st.total + " · " + pct + "%";
+
+  let msg = "🎉 Отличный результат!";
+  if (pct < 90) msg = "😃 Хорошо, но можно лучше!";
+  if (pct < 70) msg = "🙂 Неплохо! Повтори тему и попробуй снова.";
+  if (pct < 50) msg = "💪 Не сдавайся! Посмотри объяснения и пройди ещё раз.";
+  el("sumMsg").textContent = msg;
+
+  el("againBtn").onclick = () => {
+    delete store[s];
+    saveStore();
+    session[s] = { i: 0, correct: 0 };
+    updateUI();
+    renderQuestion(s);
+  };
+  updateUI();
+}
+
+function markOf(pct) {
+  if (pct === 0) return '<span class="mark" style="background:#e8ebf7;">Не начато</span>';
+  if (pct >= 90) return '<span class="mark" style="background:#ffd43b;">Отлично</span>';
+  if (pct >= 70) return '<span class="mark" style="background:#8ce99a;">Хорошо</span>';
+  if (pct >= 50) return '<span class="mark" style="background:#ffe066;">Нормально</span>';
+  return '<span class="mark" style="background:#ffa8a8;">Повторить</span>';
+}
+
+function updateUI() {
+  const keys = ["rus", "math", "eng", "hist"];
+  const body = el("progressBody");
+  body.innerHTML = "";
+  let allC = 0, allT = 0;
+
+  keys.forEach(s => {
+    const st = store[s] || { correct: 0, total: 0 };
+    allC += st.correct; allT += st.total;
+    const pct = st.total ? Math.round(st.correct / st.total * 100) : 0;
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td class="row-label ' + s + '">' + QUIZ[s].ic + " " + QUIZ[s].title + "</td>" +
+      '<td>' + st.correct + " из " + st.total + "</td>" +
+      '<td class="pts">' + pct + "%</td>" +
+      '<td class="bar-cell"><div class="bar"><div style="width:' + pct + '%; background:' + QUIZ[s].light + ';"></div></div></td>' +
+      '<td>' + markOf(pct) + "</td>";
+    body.appendChild(tr);
+  });
+
+  const totalPct = allT ? Math.round(allC / allT * 100) : 0;
+  const tr = document.createElement("tr");
+  tr.className = "total";
+  tr.innerHTML =
+    '<td class="row-label">⭐ Итого</td>' +
+    "<td>" + allC + " из " + allT + "</td>" +
+    '<td class="pts">' + totalPct + "%</td>" +
+    '<td class="bar-cell"><div class="bar"><div style="width:' + totalPct + '%; background:#ffd43b;"></div></div></td>' +
+    "<td>" + markOf(totalPct) + "</td>";
+  body.appendChild(tr);
+
+  el("totalPts").textContent = allC;
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    current = tab.dataset.sub;
+    session[current] = { i: 0, correct: 0 };
+    renderQuestion(current);
+  };
+});
+
+el("resetBtn").onclick = () => {
+  if (confirm("Сбросить весь прогресс?")) {
+    store = {};
+    localStorage.removeItem(STORE_KEY);
+    session[current] = { i: 0, correct: 0 };
+    updateUI();
+    renderQuestion(current);
+  }
+};
+
+renderQuestion(current);
+updateUI();
+</script>
+</body>
+</html>
